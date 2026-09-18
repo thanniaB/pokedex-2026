@@ -5,6 +5,7 @@ import debounce from "debounce";
 function App() {
   // antes del return va lo que es programación como tal, vaya, las funciones y eso
   const [searchText, setSearchText] = useState("");
+  const [pokemon, setPokemon] = useState();
   const DEBOUNCE_TIME_MILLISECONDS = 500;
 
   const handleSearchboxChange = (event) => {
@@ -15,8 +16,7 @@ function App() {
       try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
         const responseJson = await response.json();
-        console.log(responseJson);
-        return responseJson;
+        setPokemon(createPokemon(responseJson));
       } catch (error) {
         console.log(error);
       }
@@ -29,6 +29,17 @@ function App() {
     }, DEBOUNCE_TIME_MILLISECONDS);
   }, []);
 
+  const createPokemon = (responseJson) => {
+    return {
+      "name": responseJson.name,
+      "hp": responseJson.stats.filter((stat) => stat.stat.name === "hp")[0].base_stat,
+      "attack": responseJson.stats.filter((stat) => stat.stat.name === "attack")[0].base_stat,
+      "defense": responseJson.stats.filter((stat) => stat.stat.name === "defense")[0].base_stat,
+      "special-attack": responseJson.stats.filter((stat) => stat.stat.name === "special-attack")[0].base_stat,
+      "special-defense": responseJson.stats.filter((stat) => stat.stat.name === "special-defense")[0].base_stat,
+      "speed": responseJson.stats.filter((stat) => stat.stat.name === "speed")[0].base_stat,
+    }
+  }
 
   useEffect(() => {
     if(searchText) {
