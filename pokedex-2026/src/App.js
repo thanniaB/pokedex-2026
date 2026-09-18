@@ -1,6 +1,7 @@
 import './App.css';
 import {useState, useEffect, useMemo} from 'react';
 import debounce from "debounce";
+import { PokemonDisplay } from './components/PokemonDisplay';
 
 function App() {
   // antes del return va lo que es programación como tal, vaya, las funciones y eso
@@ -32,12 +33,14 @@ function App() {
   const createPokemon = (responseJson) => {
     return {
       "name": responseJson.name,
+      "types": responseJson.types.map((type) => type.type.name),
       "hp": responseJson.stats.filter((stat) => stat.stat.name === "hp")[0].base_stat,
       "attack": responseJson.stats.filter((stat) => stat.stat.name === "attack")[0].base_stat,
       "defense": responseJson.stats.filter((stat) => stat.stat.name === "defense")[0].base_stat,
-      "special-attack": responseJson.stats.filter((stat) => stat.stat.name === "special-attack")[0].base_stat,
-      "special-defense": responseJson.stats.filter((stat) => stat.stat.name === "special-defense")[0].base_stat,
+      "specialAttack": responseJson.stats.filter((stat) => stat.stat.name === "special-attack")[0].base_stat,
+      "specialDefense": responseJson.stats.filter((stat) => stat.stat.name === "special-defense")[0].base_stat,
       "speed": responseJson.stats.filter((stat) => stat.stat.name === "speed")[0].base_stat,
+      "spriteUrl": responseJson.sprites.front_default
     }
   }
 
@@ -56,6 +59,7 @@ function App() {
       </header>
       <label htmlFor="pokemon">Escribe el nombre del pokemon aquí</label>
       <input type="text" placeholder="eevee" name="pokemon" onChange={handleSearchboxChange}></input>
+      <PokemonDisplay pokemon={pokemon} />
     </>
   );
 }
