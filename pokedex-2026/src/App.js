@@ -1,5 +1,5 @@
 import './App.css';
-import {useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import debounce from "debounce";
 import { PokemonDisplay } from './components/PokemonDisplay';
 
@@ -14,14 +14,14 @@ function App() {
   }
 
   const fetchPokemon = async (searchTerm) => {
-      try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
-        const responseJson = await response.json();
-        setPokemon(createPokemon(responseJson));
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
+      const responseJson = await response.json();
+      setPokemon(createPokemon(responseJson));
+    } catch (error) {
+      console.log(error);
     }
+  }
 
 
   const debouncedFetchPokemon = useMemo(() => {
@@ -45,21 +45,25 @@ function App() {
   }
 
   useEffect(() => {
-    if(searchText) {
+    if (searchText) {
       debouncedFetchPokemon(searchText);
     }
 
-  } ,[searchText, debouncedFetchPokemon]);
+  }, [searchText, debouncedFetchPokemon]);
   // en el return usamos JSX, que es como HTML dentro de JS
   return (
     // JSX solo soporta enviar un solo elemento, así que todo debe de estar dentro de un fragment, como mínimo
     <>
       <header>
-        Pokedexito 2026        
+        <h1>Pokedexito 2026</h1>
       </header>
-      <label htmlFor="pokemon">Escribe el nombre del pokemon aquí</label>
-      <input type="text" placeholder="eevee" name="pokemon" onChange={handleSearchboxChange}></input>
-      <PokemonDisplay pokemon={pokemon} />
+      <main>
+        <div className="input-field">
+          <label htmlFor="pokemon">Escribe el nombre del pokemon aquí</label>
+          <input type="text" placeholder="eevee" name="pokemon" onChange={handleSearchboxChange}></input>
+        </div>
+        <PokemonDisplay pokemon={pokemon} />
+      </main>
     </>
   );
 }

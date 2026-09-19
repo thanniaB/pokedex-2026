@@ -1,0 +1,12 @@
+.poketable {
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 50%;
+    }
+}
+
+.error {
+    color: red;
+}
